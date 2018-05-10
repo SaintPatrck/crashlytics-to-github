@@ -3,6 +3,12 @@
 const functions = require('firebase-functions');
 const rp = require('request-promise');
 
+/**
+* Event handler that fires when a new issue occurs in a project.
+* 
+* @see Firebase Crashlytics IssueBuilder.onNew()
+* @link https://firebase.google.com/docs/reference/functions/functions.crashlytics.IssueBuilder?authuser=0#onNew
+*/
 exports.createNewGitHubIssue = functions.crashlytics.issue().onNew(issue => {
 	
 	const title = `Crashlytics Issue ${issue.issueId} - ${issue.issueTitle}`;
@@ -13,6 +19,15 @@ exports.createNewGitHubIssue = functions.crashlytics.issue().onNew(issue => {
 	});
 });
 
+/**
+* POSTs a new GitHub Issue to the configured repo.
+*
+* @param {title} GitHub Issue Title.
+* @param {body} GitHub Issue body content.
+*
+* @see GitHub API Issue Spec
+* @link https://developer.github.com/v3/issues/
+*/
 const createGitHubIssue = (title, body) => {
 
 	const user = functions.config().github.user;
